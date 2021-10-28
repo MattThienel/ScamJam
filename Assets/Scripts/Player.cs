@@ -26,6 +26,10 @@ public class Player : MonoBehaviour
     [HideInInspector]
     public RaycastHit2D[] rays; 
 
+    private GameObject sockUI;
+    private GameObject stickyNoteUI;
+    private GameObject creditCardUI;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +37,14 @@ public class Player : MonoBehaviour
         coll = GetComponent<Collider2D>();
         rayCount = 360;
         rays = new RaycastHit2D[rayCount];
+
+        sockUI = GameObject.Find("/Canvas/Sock UI");
+        stickyNoteUI = GameObject.Find("/Canvas/Sticky Note UI");
+        creditCardUI = GameObject.Find("/Canvas/Credit Card UI");
+
+        sockUI.SetActive(false);
+        stickyNoteUI.SetActive(false);
+        creditCardUI.SetActive(false);
     }
 
     // Update is called once per frame
@@ -64,7 +76,7 @@ public class Player : MonoBehaviour
         }
 
         // Check if interactable object is nearby and do some action
-        if( Input.GetKey( KeyCode.F ) ) {
+        if( Input.GetKey( KeyCode.E ) ) {
             j = 0;
             i = 0.0f;
             for( ; j < rayCount && i < 2.0f * 3.14f; ++j, i += 2.0f * 3.14f / 8 ) {
@@ -83,13 +95,13 @@ public class Player : MonoBehaviour
                     //Debug.Log(hit.collider.gameObject.name);
                     if( hit.collider.gameObject.name.Equals(purseName) ) {
                         hasCreditCard = true;
-                        Debug.Log("Player got credit card");   
+                        creditCardUI.SetActive(true);
                     } else if( hit.collider.gameObject.name.Equals(stickyNoteName) ) {
                         hasStickyNote = true;
-                        Debug.Log("Player got password");
+                        stickyNoteUI.SetActive(true);
                     } else if( hit.collider.gameObject.name.Equals(sockName) ) {
                         hasSocks = true;
-                        Debug.Log("Player got socks");
+                        sockUI.SetActive(true);
                     } else if( hit.collider.gameObject.name.Equals(keyboardName) ) {
                         if( hasStickyNote && hasCreditCard ) {
                             SceneManager.LoadScene("Ending Scene");
